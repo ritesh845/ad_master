@@ -4,10 +4,14 @@ const Place = require("../models/advertisementsPlaces.model");
 const advertisementService = require("../services/advertisements.service");
 
 exports.advertisementValidation = [
+    check("rank")
+    .not()
+    .isEmpty()
+    .withMessage("Rank field is required!!"),
     check("app_id")
     .not()
     .isEmpty()
-    .withMessage("App Id is required!!")
+    .withMessage("App Id field is required!!")
     .custom(async (value) => {
        if(value !=null){
             const getApp = await App.findById({ _id: value});
@@ -19,7 +23,7 @@ exports.advertisementValidation = [
     check("place_id")
     .not()
     .isEmpty()
-    .withMessage("place id is required!!")
+    .withMessage("place id field is required!!")
     .custom(async (value) => {
         if(value !=null){
             const getPlace = await Place.findById({ _id: value });
@@ -31,7 +35,7 @@ exports.advertisementValidation = [
     check("poster_type")
     .not()
     .isEmpty()
-    .withMessage("place id is required!!")
+    .withMessage("place id field is required!!")
     .custom(async (value) => {
         if(value !=null){
             if(value != 'images' && value != 'videos'){

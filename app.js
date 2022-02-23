@@ -8,6 +8,8 @@ const port = process.env.PORT || 5000;
 const app = express();
 
 
+
+
 app.use(cors());
 
 const AdvertisementsRoutes = require("./routes/advertisements.routes"); //Advertisement_Portal_Routes

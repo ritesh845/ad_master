@@ -11,7 +11,7 @@ const advertisements_PortalSchema  = new mongoose.Schema(
     brand_name: { type: String, required: true },
     campaign_title: { type: String, default:''},
     call_to_action: { type: String, default:''},
-    // poster: { type: Array, default: []},
+    poster: { type: String, default: []},
     poster: { type:String, required:`Poster field can't be empty`},
     poster_type: { type: String},             //, enum:["image", "video"], required: true }, 
     thumbnail: { type: String, default: ''},
