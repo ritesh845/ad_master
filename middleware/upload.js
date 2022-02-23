@@ -55,7 +55,7 @@ exports.uploadFiles = async (req,res,next) => {
                 }
             }     
             if(!errors){
-                req.body.posterFile = storage(sampleFile,folder);
+                req.body.posterFile =  storage(sampleFile,folder);
             } 
         }else{
             message.msg = "poster field is required";
@@ -73,8 +73,7 @@ exports.uploadFiles = async (req,res,next) => {
                     folder = 'videos';
                     videoFiles.push(storage(sampleFile,folder));
                 }
-                req.body.imageFiles = imageFiles;
-                req.body.videoFiles = videoFiles;
+                
             }else{
                 req.files.files.forEach((file) => {
                     if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'){
@@ -85,10 +84,9 @@ exports.uploadFiles = async (req,res,next) => {
                         videoFiles.push(storage(file,folder));
                     }
                 });
-                req.body.imageFiles = imageFiles;
-                req.body.videoFiles = videoFiles;
-                
             }
+            req.body.imageFiles = imageFiles;
+            req.body.videoFiles = videoFiles;
         }else{
             message.msg = "files field is required";
             message.param = 'files';

@@ -46,9 +46,9 @@ exports.createAdvertise = async (req, res) => {
 exports.showAdvertises = async (req, res) => {
 	try {
 		const getAdvertises = await Advertisements.find({}).sort({ rank: 1 });
-		res.status(200).json({ status: "success", data: getAdvertises });
+		return res.status(200).json({ status: "success", data: getAdvertises });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error occured", data: error });
+		return res.status(500).json({ status: "error", message: "Error occured", data: error });
 	}
 };
 
@@ -56,37 +56,37 @@ exports.getAdvertiseById = async (req, res) => {
 	try {
 		const _id = req.params.id;
 		const getAdvertise = await Advertisements.findById({ _id: _id });
-		res.status(200).json({ status: "success", data: getAdvertise });
+		return res.status(200).json({ status: "success", data: getAdvertise });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error occured", data: error });
+		return res.status(500).json({ status: "error", message: "Error occured", data: error });
 	}
 };
 
 exports.getAdvertiseByQuery = async (req, res) => {
 	try {
 		const Advertises = await Advertisements.find(req.query);
-		res.status(200).json({ status: "success", data: Advertises });
+		return res.status(200).json({ status: "success", data: Advertises });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error occured", data: error });
+		return res.status(500).json({ status: "error", message: "Error occured", data: error });
 	}
 };
 
 exports.updateAdvertiseById = async (req, res) => {
 	try {
 		const _id = req.params.id;
-		const updateAdvertise = await Advertisements.findByIdAndUpdate(_id, req.body, { new: true });
-		res.status(200).json({ status: "success", message: "Updated successfully" });
+		await Advertisements.findByIdAndUpdate(_id, req.body, { new: true });
+		return res.status(200).json({ status: "success", message: "Updated successfully" });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error occured", data: error });
+		return res.status(500).json({ status: "error", message: "Error occured", data: error });
 	}
 };
 
 exports.deleteAdvertiseById = async (req, res) => {
 	try {
 		const _id = req.params.id;
-		const deleteAdvertise = await Advertisements.findByIdAndDelete(_id);
-		res.status(200).json({ status: "success", message: "Deleted successfully" });
+		await Advertisements.findByIdAndDelete(_id);
+		return res.status(200).json({ status: "success", message: "Deleted successfully" });
 	} catch (error) {
-		res.status(500).json({ status: "error", message: "Error occured", data: error });
+		return res.status(500).json({ status: "error", message: "Error occured", data: error });
 	}
 };
