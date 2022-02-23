@@ -1,6 +1,7 @@
 const { check, validationResult }= require('express-validator');
 const App = require("../models/apps.model");
 const Place = require("../models/advertisementsPlaces.model");
+const advertisementService = require("../services/advertisements.service");
 
 exports.advertisementValidation = [
     check("app_id")
@@ -38,7 +39,21 @@ exports.advertisementValidation = [
             }
         }
     }), 
-    (req, res, next) => {
+   async (req, res, next) => {
+        
+        let query = { place_id: req.body.place_id, rank: req.body.rank, app_id: req.body.app_id };
+
+		let queryResult = await advertisementService.getActiveAdvertisementsByQuery(query);
+        
+        if (queryResult.length > 0) {
+            return res.status(400).json({ success: false, error: "Validator Error", message: [{
+                "value": "",
+                "msg": "Already exists",
+                "param": "",
+                "location": "body"
+            }] });
+        }
+
         const errors = validationResult(req);
  
         // If some error occurs, then this
