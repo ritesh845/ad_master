@@ -2,10 +2,13 @@ const fs = require('fs');
 const path = require('path');
 
 const storage = (sampleFile,folder) => {   
-    let dir = path.join(__dirname, '../poster', `${folder}`);
+    let dir = path.join(__dirname, `${folder}`);
     if (!fs.existsSync('./poster/')) {
         fs.mkdirSync('./poster/');
-      }
+    }
+    if (!fs.existsSync('./uploads/')) {
+        fs.mkdirSync('./uploads/');
+    }
 
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir);
@@ -16,7 +19,7 @@ const storage = (sampleFile,folder) => {
         if (err)
             return res.status(500).json({ success: false, message: [], error: 'Internal Server Error' });
     });
-    return  'poster/'+ `${folder}` +'/' + name;
+    return  `${folder}`.replace('../',"") +'/' + name;
 }
 
 exports.uploadFiles = async (req,res,next) => {
@@ -36,7 +39,7 @@ exports.uploadFiles = async (req,res,next) => {
             if(req.body.poster_type === 'images'){
                 if(req.files.poster.mimetype === 'image/png' || req.files.poster.mimetype === 'image/jpg' || req.files.poster.mimetype === 'image/jpeg'){
                     sampleFile = req.files.poster;
-                    folder = 'images';
+                    folder = '../poster/images';
                     errors = false;
                 }else{
                     message.msg = "poster field is type of image";
@@ -46,7 +49,7 @@ exports.uploadFiles = async (req,res,next) => {
             }else{
                 if(req.files.poster.mimetype === 'video/mp4'){
                     sampleFile = req.files.poster;
-                    folder = 'videos';
+                    folder = '../poster/videos';
                     errors = false;
                 }else{
                     message.msg = "poster field is type of video";
@@ -67,20 +70,20 @@ exports.uploadFiles = async (req,res,next) => {
             if(req.files.files.length === undefined){
                 sampleFile  = req.files.files;
                 if(sampleFile.mimetype === 'image/png' || sampleFile.mimetype === 'image/jpg' || sampleFile.mimetype === 'image/jpeg'){
-                    folder = 'images';
+                    folder = '../uploads/images';
                     imageFiles.push(storage(sampleFile,folder));
                 }else if(sampleFile.mimetype === 'video/mp4'){
-                    folder = 'videos';
+                    folder = '../uploads/videos';
                     videoFiles.push(storage(sampleFile,folder));
                 }
                 
             }else{
                 req.files.files.forEach((file) => {
                     if(file.mimetype === 'image/png' || file.mimetype === 'image/jpg' || file.mimetype === 'image/jpeg'){
-                        folder = 'images';
+                        folder = '../uploads/images';
                        imageFiles.push(storage(file,folder));
                     }else if(file.mimetype === 'video/mp4'){
-                        folder = 'videos';
+                        folder = '../uploads/videos';
                         videoFiles.push(storage(file,folder));
                     }
                 });
